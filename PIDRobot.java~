@@ -66,11 +66,11 @@ public class PIDRobot{
     robot.sleep(i);
   }
 
-  public PIDRobot(String code, double kp, double ki, double kd, double ref){
+  public PIDRobot(String code, double kp, double kd, double ki, double ref){
     robot = new Robot(code);
     leftMotor = robot.getLargeMotor(Motor.Port.A);
     rightMotor = robot.getLargeMotor(Motor.Port.B);
-    uSensor = robot.getUltrasonicSensor(Sensor.Port.S2);
+    uSensor = robot.getUltrasonicSensor(Sensor.Port.S1);
     pid = new PIDController(kp, kd, ki, ref);
   }
 
@@ -83,14 +83,13 @@ public class PIDRobot{
     Clock clock = Clock.systemUTC();
     long base = clock.millis();
     long time = clock.millis()-base;
-    PIDRobot robot = new PIDRobot("dia-lego-b3", 60, 0.375, 0.09375, 50);
+    PIDRobot robot = new PIDRobot("dia-lego-b3", 45, 0, 1, 50);
     System.out.println("Connected, Starting Robot");
     robot.start();
     System.out.println("Started");
     for (int i=0; i<5000; i++){
       robot.updateSpeed();
       robot.printSpeed();
-      //robot.sleep(1);
       time = clock.millis()-base;
       if ((((int)time)/10000)%2==1){
         System.out.println("Flip");

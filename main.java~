@@ -5,13 +5,22 @@ public class main{
 
     Motor leftMotor = robot.getLargeMotor(Motor.Port.A);
     Motor rightMotor = robot.getLargeMotor(Motor.Port.B);
-    UltrasonicSensor ultraSensor = robot.getUltrasonicSensor(Sensor.Port.S2);
+    UltrasonicSensor ultraSensor = robot.getUltrasonicSensor(Sensor.Port.S1);
 
     SensorThread p = new SensorThread(ultraSensor);
     p.start();
 
-   
-    robot.sleep(100000);
+    leftMotor.setSpeed(300);
+    rightMotor.setSpeed(300);
+    leftMotor.forward();
+    rightMotor.forward();
+
+    robot.sleep(1000);
+
+    leftMotor.setSpeed(0);
+    rightMotor.setSpeed(0);
+    leftMotor.stop();
+    rightMotor.stop();
 
 
     p.stop();
@@ -26,7 +35,7 @@ class SensorThread extends Thread {
 
        public void run() {
          while(true){
-           System.out.println("Distance "+ultraSensor.getDistance()*100);
+           System.out.println("Distance "+ultraSensor.getDistance());
          }
 
        }
