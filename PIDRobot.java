@@ -83,7 +83,7 @@ public class PIDRobot{
     Clock clock = Clock.systemUTC();
     long base = clock.millis();
     long time = clock.millis()-base;
-    PIDRobot robot = new PIDRobot("dia-lego-b3", 110, 0, 0, 50);
+    PIDRobot robot = new PIDRobot("dia-lego-b3", 3, 0.28125, 8, 50);
     System.out.println("Connected, Starting Robot");
     robot.start();
     System.out.println("Started");
