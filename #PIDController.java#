@@ -35,11 +35,7 @@ public class PIDController{
     for (int x=1; x<errors.size();x++){
       i += errors.get(x)*(timing.get(x)-timing.get(x-1));
     };
-<<<<<<< HEAD
     i = errors.get(errors.size()-1)*(timing.get(errors.size()-1)-timing.get(errors.size()-2));
-=======
-    i = e*(timing.get(errors.size()-1)-timing.get(errors.size()-2));
->>>>>>> 2669d2e469adfdb8d10e53d17fecf5205299d334
     return kp*e + kd*d + ki*i;
   }
 
