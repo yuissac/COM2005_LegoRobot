@@ -1,20 +1,31 @@
 import ShefRobot.*;
+import java.util.ArrayList;
+import java.time.Clock;
 public class PIDRobot{
   double speed = 0;
   Robot robot;
   Motor leftMotor, rightMotor;
   UltrasonicSensor uSensor;
   PIDController pid;
+  double dampener = 1;
+
+  public void setTarget(double t){
+    pid.setTarget(t);
+  }
+
+  public void printSpeed(){
+    System.out.println("Speed: "+speed);
+  }
 
   public void start(){
     if (speed >= 0){
-      leftMotor.setSpeed((int)speed);
-      rightMotor.setSpeed((int)speed);
+      leftMotor.setSpeed((int)(dampener*speed));
+      rightMotor.setSpeed((int)(dampener*speed));
       leftMotor.forward();
       rightMotor.forward();
     } else {
-      leftMotor.setSpeed(-(int)speed);
-      rightMotor.setSpeed(-(int)speed);
+      leftMotor.setSpeed(-(int)(dampener*speed));
+      rightMotor.setSpeed(-(int)(dampener*speed));
       leftMotor.backward();
       rightMotor.backward();
     }
@@ -33,30 +44,26 @@ public class PIDRobot{
 
   public void updateSpeed(){
     double oSpeed = speed;
-    speed += pid.run(uSensor.getDistance());
-    if (speed*oSpeed < 0){
-      leftMotor.stop();
-      rightMotor.stop();
-      if (speed >= 0){
-        leftMotor.setSpeed((int)speed);
-        rightMotor.setSpeed((int)speed);
-        leftMotor.forward();
-        rightMotor.forward();
-      } else {
-        leftMotor.setSpeed(-(int)speed);
-        rightMotor.setSpeed(-(int)speed);
-        leftMotor.backward();
-        rightMotor.backward();
-      }
+    double dis = uSensor.getDistance()*100;
+    speed = pid.run(dis);
+    System.out.println("Distance: "+dis);
+
+    if (speed >= 0){
+      leftMotor.setSpeed((int)(dampener*speed));
+      rightMotor.setSpeed((int)(dampener*speed));
+      leftMotor.backward();
+      rightMotor.backward();
     } else {
-      if (speed >= 0){
-        leftMotor.setSpeed((int)speed);
-        rightMotor.setSpeed((int)speed);
-      } else {
-        leftMotor.setSpeed(-(int)speed);
-        rightMotor.setSpeed(-(int)speed);
-      }
+      leftMotor.setSpeed(-(int)(dampener*speed));
+      rightMotor.setSpeed(-(int)(dampener*speed));
+      leftMotor.forward();
+      rightMotor.forward();
     }
+
+  }
+
+  public void sleep(int i){
+    robot.sleep(i);
   }
 
   public PIDRobot(String code, double kp, double kd, double ki, double ref){
@@ -73,12 +80,29 @@ public class PIDRobot{
 
 
   public static void main(String args[]){
-    PIDRobot robot = new PIDRobot("dia-lego-b3", 1, 0.5, 0.3, 20);
+    Clock clock = Clock.systemUTC();
+    long base = clock.millis();
+    long time = clock.millis()-base;
+    PIDRobot robot = new PIDRobot("dia-lego-b3", 110, 0, 0, 50);
+    System.out.println("Connected, Starting Robot");
     robot.start();
-    for (int i=0; i<200; i++){
+    System.out.println("Started");
+    for (int i=0; i<5000; i++){
       robot.updateSpeed();
+      robot.printSpeed();
+      time = clock.millis()-base;
+      if ((((int)time)/10000)%2==1){
+        System.out.println("Flip");
+        //robot.setTarget(0.3);
+      } else {
+        System.out.println("Flop");
+        //robot.setTarget(0.5);
+      }
+
     };
     robot.stop();
+    System.out.println("Stopped");
     robot.close();
+    System.out.println("Closed");
   }
 }
