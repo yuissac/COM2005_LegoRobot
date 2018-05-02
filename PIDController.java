@@ -28,15 +28,13 @@ public class PIDController{
   }
 
   private double gen_c(double e){
-    double d = (e-errors.get(errors.size()-2))/((timing.get(errors.size()-1)-timing.get(errors.size()-2)));
-    //System.out.println(d);
-    //double i = e*(timing.get(errors.size()-1)-timing.get(errors.size()-2));
-    double i = 0;
-    for (int x=1; x<errors.size();x++){
-      i += errors.get(x)*(timing.get(x)-timing.get(x-1));
-    };
-
-    i = e*(timing.get(errors.size()-1)-timing.get(errors.size()-2));
+    double dt = timing.get(errors.size()-1)-timing.get(errors.size()-2);
+    double d = (e-errors.get(errors.size()-2))/dt;
+    //double i = 0;
+    //for (int x=1;x<errors.size();x++){
+      //i += errors.get(x)*(timing.get(x)-timing.get(x-1));
+    //}
+    double i = e*dt;
     return kp*e + kd*d + ki*i;
   }
 
