@@ -1,7 +1,7 @@
 import ShefRobot.*;
 import java.util.ArrayList;
 import java.time.Clock;
-public class PIDRobotP{
+public class PIDRobotMaze{
   double speedL = 0;
   double speedR = 0;
   Robot robot;
