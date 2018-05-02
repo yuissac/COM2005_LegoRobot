@@ -13,7 +13,7 @@ public class PIDRobotMaze{
   private PIDController pidR;
   private double pDisL = 0;
   private double pDisR = 0;
-  private double dampener = 0.12;
+  private double dampener = 0.07;
 
   public void printSpeed(){
     System.out.println("Speed: ("+speedL+","+speedR+")");
@@ -113,7 +113,7 @@ public class PIDRobotMaze{
     Clock clock = Clock.systemUTC();
     long base = clock.millis();
     long time = clock.millis()-base;
-    PIDRobotMaze robot = new PIDRobotMaze("dia-lego-b3", 20, 0.1*0.375, 0.1*0.09375, 20, 0.1*0.375, 0.1*0.09375, 1.0, 1.0);
+    PIDRobotMaze robot = new PIDRobotMaze("dia-lego-b3", 20, 0.375, 0.09375, 20, 0.375, 0.09375, 1.0, 1.0);
 
     System.out.println("Connected, Starting Robot");
     robot.start();
