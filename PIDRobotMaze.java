@@ -13,7 +13,7 @@ public class PIDRobotMaze{
   private PIDController pidR;
   private double pDisL = 0;
   private double pDisR = 0;
-  private double dampener = 0.07;
+  private double dampener = 0.15;
 
   public void printSpeed(){
     System.out.println("Speed: ("+speedL+","+speedR+")");

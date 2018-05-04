@@ -87,7 +87,7 @@ public class PIDRobotP{
   }
 
   public PIDRobotP(String code, double kp, double ki, double kd, double kpp, double kip, double kdp, double ref, double refp){
-    robot = new Robot(code);
+    robot = new Robot();
     leftMotor = robot.getLargeMotor(Motor.Port.A);
     rightMotor = robot.getLargeMotor(Motor.Port.B);
     uSensor = robot.getUltrasonicSensor(Sensor.Port.S1);
