@@ -13,7 +13,7 @@ public class PIDRobotMaze{
   private PIDController pidR;
   private double pDisL = 0;
   private double pDisR = 0;
-  private double dampener = 0.15;
+  private double dampener = 0.12;
 
   public void printSpeed(){
     System.out.println("Speed: ("+speedL+","+speedR+")");
@@ -98,7 +98,7 @@ public class PIDRobotMaze{
   }
 
   public PIDRobotMaze(String code, double kpL, double kiL, double kdL, double kpR, double kiR, double kdR, double refL, double refR){
-    robot = new Robot();
+    robot = new Robot(code);
     leftMotor = robot.getLargeMotor(Motor.Port.A);
     rightMotor = robot.getLargeMotor(Motor.Port.B);
     uSensorL = robot.getUltrasonicSensor(Sensor.Port.S1);
